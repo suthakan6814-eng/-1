@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>For You ❤️</title>
+
+<style>
+body{
+margin:0;
+background:black;
+overflow:hidden;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+color:white;
+font-family:sans-serif;
+}
+
+#text{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+font-size:28px;
+opacity:0;
+transition:0.5s;
+}
+</style>
+
+</head>
+
+<body>
+
+<div id="text">เธอคือสิ่งที่ดีที่สุดของเค้า ❤️</div>
+
+<canvas id="c"></canvas>
+
+<script>
+
+let c=document.getElementById("c");
+let ctx=c.getContext("2d");
+
+c.width=window.innerWidth;
+c.height=window.innerHeight;
+
+let particles=[];
+
+function heart(t){
+let x=16*Math.pow(Math.sin(t),3);
+let y=-(13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t));
+return{x:x*15,y:y*15};
+}
+
+for(let i=0;i<800;i++){
+let t=Math.random()*Math.PI*2;
+let p=heart(t);
+
+particles.push({
+x:p.x,
+y:p.y,
+z:Math.random()*200
+});
+}
+
+let angle=0;
+
+function draw(){
+
+ctx.fillStyle="rgba(0,0,0,0.2)";
+ctx.fillRect(0,0,c.width,c.height);
+
+for(let p of particles){
+
+let scale=200/(200+p.z);
+
+let x=c.width/2+p.x*scale*Math.cos(angle);
+let y=c.height/2+p.y*scale;
+
+ctx.fillStyle="pink";
+ctx.fillRect(x,y,2,2);
+
+}
+
+angle+=0.01;
+
+requestAnimationFrame(draw);
+
+}
+
+draw();
+
+document.body.onclick=function(){
+document.getElementById("text").style.opacity=1;
+}
+
+</script>
+
+</body>
+</html>
